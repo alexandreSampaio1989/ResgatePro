@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_022917) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_222158) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_022917) do
     t.index ["cnpj"], name: "index_tb_empresas_on_cnpj", unique: true
   end
 
+  create_table "tb_equipe_membros", force: :cascade do |t|
+    t.bigint "equipe_id", null: false
+    t.bigint "funcionario_id", null: false
+    t.string "funcao_na_equipe"
+    t.date "data_escala"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["equipe_id"], name: "index_tb_equipe_membros_on_equipe_id"
+    t.index ["funcionario_id"], name: "index_tb_equipe_membros_on_funcionario_id"
+  end
+
+  create_table "tb_equipes", force: :cascade do |t|
+    t.bigint "empresa_id", null: false
+    t.bigint "viatura_id"
+    t.string "nm_equipe", null: false
+    t.boolean "fora_de_operacao", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["empresa_id"], name: "index_tb_equipes_on_empresa_id"
+    t.index ["viatura_id"], name: "index_tb_equipes_on_viatura_id"
+  end
+
   create_table "tb_funcionario_cargos", force: :cascade do |t|
     t.bigint "funcionario_id", null: false
     t.bigint "cargo_id", null: false
@@ -65,7 +87,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_022917) do
     t.index ["empresa_id"], name: "index_tb_funcionarios_on_empresa_id"
   end
 
+  create_table "tb_viaturas", force: :cascade do |t|
+    t.string "numero", null: false
+    t.string "descricao_viatura"
+    t.string "tipo_viatura"
+    t.string "placa", limit: 10, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["placa"], name: "index_tb_viaturas_on_placa", unique: true
+  end
+
   add_foreign_key "tb_cnhs", "tb_funcionarios", column: "funcionario_id"
+  add_foreign_key "tb_equipe_membros", "tb_equipes", column: "equipe_id"
+  add_foreign_key "tb_equipe_membros", "tb_funcionarios", column: "funcionario_id"
+  add_foreign_key "tb_equipes", "tb_empresas", column: "empresa_id"
+  add_foreign_key "tb_equipes", "tb_viaturas", column: "viatura_id"
   add_foreign_key "tb_funcionario_cargos", "tb_cargos", column: "cargo_id"
   add_foreign_key "tb_funcionario_cargos", "tb_funcionarios", column: "funcionario_id"
   add_foreign_key "tb_funcionarios", "tb_empresas", column: "empresa_id"
