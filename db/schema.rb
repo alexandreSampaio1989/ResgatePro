@@ -34,7 +34,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_222158) do
   end
 
   create_table "tb_empresas", force: :cascade do |t|
-    t.string "nome", null: false
+    t.string "nm_empresa", null: false
     t.string "cnpj", null: false
     t.boolean "ativa", default: true, null: false
     t.datetime "created_at", null: false
@@ -75,7 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_222158) do
 
   create_table "tb_funcionarios", force: :cascade do |t|
     t.bigint "empresa_id", null: false
-    t.string "nome", null: false
+    t.string "nm_funcionario", null: false
     t.string "cpf", null: false
     t.boolean "status", default: true, null: false
     t.date "dt_admissao"

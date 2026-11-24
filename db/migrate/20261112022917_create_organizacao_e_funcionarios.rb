@@ -1,7 +1,7 @@
 class CreateOrganizacaoEFuncionarios < ActiveRecord::Migration[8.1]
   def change
     create_table :tb_empresas do |t|
-      t.string :nome, null: false
+      t.string :nm_empresa, null: false
       t.string :cnpj, null: false, index: { unique: true }
       t.boolean :ativa, default: true, null: false
 
@@ -10,7 +10,7 @@ class CreateOrganizacaoEFuncionarios < ActiveRecord::Migration[8.1]
 
     create_table :tb_funcionarios do |t|
       t.references :empresa, null: false, foreign_key: { to_table: :tb_empresas }
-      t.string :nome, null: false
+      t.string :nm_funcionario, null: false
       t.string :cpf, null: false, index: { unique: true }
       t.boolean :status, default: true, null: false
       
